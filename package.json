@@ -1,0 +1,16 @@
+{
+  "name": "harmony-playmusic",
+  "pluginName": "Play Music",
+  "pluginColor": "#ef6c00",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vincent L",
+  "license": "ISC",
+  "dependencies": {
+    "playmusic": "github:jamon/playmusic"
+  }
+}
