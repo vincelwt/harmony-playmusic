@@ -28,7 +28,10 @@ const convertTrack = (rawTrack, allAccess) => {
 	}
 
 	if (rawTrack.lastRatingChangeTimestamp) trackObject.RatingTimestamp = rawTrack.lastRatingChangeTimestamp
-	if (rawTrack.trackNumber) trackObject.trackNumber = rawTrack.trackNumber
+	if (rawTrack.trackNumber) {
+		let multiplier = (rawTrack.discNumber || 1) 
+		trackObject.trackNumber = multiplier * rawTrack.trackNumber
+	}
 
 	if (rawTrack.albumArtRef) trackObject.artwork = rawTrack.albumArtRef[0].url
 	else if (rawTrack.imageBaseUrl) trackObject.artwork = rawTrack.imageBaseUrl
@@ -84,7 +87,7 @@ class Playmusic {
 				})
 
 				pm.getFavorites((err, favorites_data) => { // Works only when all-access
-					if (err) callback([err])
+					if (err) return callback(err)
 
 					let added
 					for (let f of favorites_data.track) {
@@ -125,10 +128,10 @@ class Playmusic {
 					})
 
 					pm.getPlayLists((err, playlists_data) => {
-						if (err) callback([err])
+						if (err) return callback(err)
 
 						pm.getPlayListEntries((err, playlists_entries_data) => {
-							if (err) callback([err])
+							if (err) return callback(err)
 
 							let temp = {}
 
@@ -539,9 +542,9 @@ class Playmusic {
 	*
 	*/
 
-	static appStarted() {
+	static onStart(callback) {
 		pm.init({ masterToken: settings.playmusic.masterToken }, (err, res) => {
-			if (err) console.error(err)
+			callback(err)
 		})
 	}
 
